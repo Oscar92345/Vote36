@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>投票結果查詢</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <h2>目前統計結果</h2>
+  <div class="result">
+    <h3>印象票</h3>
+    <p>正方：<span id="impression_pro">0</span></p>
+    <p>反方：<span id="impression_con">0</span></p>
+  </div>
+  <div class="result">
+    <h3>結果票</h3>
+    <p>正方：<span id="final_pro">0</span></p>
+    <p>反方：<span id="final_con">0</span></p>
+  </div>
+  <script>
+    const impressionPro = document.getElementById('impression_pro');
+    const impressionCon = document.getElementById('impression_con');
+    const finalPro = document.getElementById('final_pro');
+    const finalCon = document.getElementById('final_con');
+
+    firebase.database().ref('votes').on('value', snapshot => {
+      const data = snapshot.val() || {};
+      impressionPro.textContent = data.impression?.pro || 0;
+      impressionCon.textContent = data.impression?.con || 0;
+      finalPro.textContent = data.final?.pro || 0;
+      finalCon.textContent = data.final?.con || 0;
+    });
+  </script>
+</body>
+</html>
